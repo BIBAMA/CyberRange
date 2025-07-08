@@ -1,0 +1,26 @@
+# PowerShell script to configure "Require a password when a computer wakes (on battery)"
+
+.NOTES
+    Author          : Enoch Bibama
+    LinkedIn        : inkedin.com/in/enochebibama/
+    GitHub          : github.com/bibama
+    Date Created    : 2025-07-09
+    Last Modified   : 2025-07-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000145
+
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51"
+$regName = "DCSettingIndex"
+$regValue = 1
+
+# Create the registry path if it doesn't exist
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the registry value
+New-ItemProperty -Path $regPath -Name $regName -PropertyType DWord -Value $regValue -Force | Out-Null
+
+Write-Output "Password on wake (on battery) configured successfully."
