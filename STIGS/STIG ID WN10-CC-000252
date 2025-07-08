@@ -1,0 +1,52 @@
+<#
+.SYNOPSIS
+    Disables Windows Game Recording and Broadcasting to comply with STIG ID: WN10-CC-000252
+
+.DESCRIPTION
+    Sets the registry value "AllowGameDVR" to 0 under:
+    HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\GameDVR
+
+.NOTES
+    Author          : Enoch Bibama
+    LinkedIn        : inkedin.com/in/enochebibama/
+    GitHub          : github.com/bibama
+    Date Created    : 2025-07-09
+    Last Modified   : 2025-07-09
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000252
+
+
+    STIG ID: WN10-CC-000252
+    SRG: SRG-OS-000095-GPOS-00049
+    CCI: CCI-000381
+    Vulnerability ID: V-220845
+    Applicable to Windows 10 versions except LTSC/1507/1607
+#>
+
+$RegPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR"
+$RegName = "AllowGameDVR"
+$DesiredValue = 0
+
+try {
+    # Ensure the registry path exists
+    if (-not (Test-Path $RegPath)) {
+        New-Item -Path $RegPath -Force | Out-Null
+        Write-Output "Created registry path: $RegPath"
+    }
+
+    # Set the registry value
+    Set-ItemProperty -Path $RegPath -Name $RegName -Value $DesiredValue -Type DWord
+    Write-Output "Set '$RegName' to '$DesiredValue' at '$RegPath'"
+
+    # Confirm value
+    $currentValue = Get-ItemPropertyValue -Path $RegPath -Name $RegName
+    if ($currentValue -eq $DesiredValue) {
+        Write-Output "✅ Successfully disabled Windows Game Recording and Broadcasting."
+    } else {
+        Write-Warning "⚠ Registry value was not set correctly."
+    }
+}
+catch {
+    Write-Error "❌ Failed to apply fix: $_"
