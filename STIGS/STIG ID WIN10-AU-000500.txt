@@ -4,7 +4,7 @@
 
 .NOTES
     Author          : Enoch Bibama
-    LinkedIn        : inkedin.com/in/enochebibama/
+    LinkedIn        : linkedin.com/in/enochebibama/
     GitHub          : github.com/Enoch7791
     Date Created    : 2025-01-07
     Last Modified   : 2025-01-07
