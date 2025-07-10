@@ -2,7 +2,7 @@
 
 .NOTES
     Author          : Enoch Bibama
-    LinkedIn        : inkedin.com/in/enochebibama/
+    LinkedIn        : linkedin.com/in/enochebibama/
     GitHub          : github.com/bibama
     Date Created    : 2025-07-09
     Last Modified   : 2025-07-09
