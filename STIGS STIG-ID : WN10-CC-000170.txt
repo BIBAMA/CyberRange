@@ -1,0 +1,33 @@
+# Purpose:
+Ensure that Microsoft accounts are optional for modern-style apps — this aligns with the STIG requirement.
+
+# PowerShell script to make WN10-CC-000170 compliant (PASS)
+
+.NOTES
+    Author          : Enoch Bibama
+    LinkedIn        : linkedin.com/in/enochebibama/
+    GitHub          : github.com/bibama
+    Date Created    : 2025-07-10
+    Last Modified   : 2025-07-10
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000170
+
+# STIG ID: WN10-CC-000170 - Ensure Microsoft accounts are optional for modern apps
+
+$regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+$regName = "MSAOptional"
+$regValue = 1
+
+# Ensure the registry path exists
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the required registry value
+Set-ItemProperty -Path $regPath -Name $regName -Value $regValue -Type DWord
+
+# Confirm the result
+$currentValue = Get-ItemProperty -Path $regPath -Name $regName
+Write-Output "Set $regName to $($currentValue.$regName) at $regPath - COMPLIANT with WN10-CC-000170."
