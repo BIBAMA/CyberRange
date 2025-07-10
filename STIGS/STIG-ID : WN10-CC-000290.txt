@@ -1,0 +1,35 @@
+
+# Description: Ensure Remote Desktop Services client connection encryption is set to High Level
+
+.NOTES
+    Author          : Enoch Bibama
+    LinkedIn        : linkedin.com/in/enochebibama/
+    GitHub          : github.com/bibama
+    Date Created    : 2025-07-10
+    Last Modified   : 2025-07-10
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000290
+
+# Define registry path and value
+$registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services"
+$valueName = "MinEncryptionLevel"
+$requiredValue = 3
+
+# Check if the registry path exists; if not, create it
+if (-not (Test-Path $registryPath)) {
+    New-Item -Path $registryPath -Force | Out-Null
+}
+
+# Set the required encryption level
+Set-ItemProperty -Path $registryPath -Name $valueName -Value $requiredValue -Type DWord
+
+# Confirm the setting was applied
+$currentValue = Get-ItemProperty -Path $registryPath -Name $valueName | Select-Object -ExpandProperty $valueName
+if ($currentValue -eq $requiredValue) {
+    Write-Host "MinEncryptionLevel set to $requiredValue (High Level) successfully." -ForegroundColor Green
+} else {
+    Write-Host "Failed to set MinEncryptionLevel. Current value: $currentValue" -ForegroundColor Red
+}
+
