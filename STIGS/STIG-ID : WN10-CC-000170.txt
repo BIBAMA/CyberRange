@@ -1,0 +1,36 @@
+PURPOSE: To ensure compliance with WN10-00-000170 (Disabling SMBv1 on the SMB client)
+
+# STIG ID: WN10-00-000170 - Disable SMBv1 client driver
+
+.NOTES
+    Author          : Enoch Bibama
+    LinkedIn        : linkedin.com/in/enochebibama/
+    GitHub          : github.com/bibama
+    Date Created    : 2025-07-10
+    Last Modified   : 2025-07-10
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000170
+
+
+$regPath = "HKLM:\SYSTEM\CurrentControlSet\Services\mrxsmb10"
+$regName = "Start"
+$regValue = 4  # 4 = Disabled SMBv1 client driver
+
+# Check if the registry path exists
+if (-not (Test-Path $regPath)) {
+    Write-Output "Registry path does not exist. Creating path..."
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the registry key to disable SMBv1 client driver
+Set-ItemProperty -Path $regPath -Name $regName -Value $regValue -Type DWord
+
+# Confirm the setting
+$currentValue = Get-ItemProperty -Path $regPath -Name $regName
+Write-Output "Set SMBv1 client driver to 'Disabled' (Value: $($currentValue.$regName)) - COMPLIANT with WN10-00-000170."
+
+# Prompt for system restart
+Write-Output "A restart is required for changes to take effect."
+
